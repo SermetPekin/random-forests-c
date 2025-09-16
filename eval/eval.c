@@ -1,3 +1,9 @@
+
+/*
+ * Note: Data leakage in cross-validation was fixed in this file.
+ * The training set for each fold now properly excludes the test fold rows.
+ * Fix by Sermet Pekin, 16.09.2025
+ */
 /*
 @author andrii dobroshynski
 */
@@ -119,41 +125,45 @@ double cross_validate(double **data,
                       const struct dim *csv_dim,
                       const int k_folds)
 {
-    // Sum of all accuracies on every evaluated fold.
     double sumAccuracy = 0;
+    size_t rows = csv_dim->rows;
+    size_t cols = csv_dim->cols;
+    size_t rowsPerFold = rows / k_folds;
 
-    // Iterate through the fold indeces and fit models on the selections. The current 'foldIdx' is the index
-    // of the fold in the array of all loaded data that is the fold that's currently the test fold, with all of
-    // the other folds being used for training.
     for (size_t foldIdx = 0; foldIdx < k_folds; ++foldIdx)
     {
-        const ModelContext ctx = (ModelContext){
-            testingFoldIdx : foldIdx /* Fold to use for evaluation. */,
-            rowsPerFold : csv_dim->rows / k_folds /* Number of rows per fold. */
+        // Allocate training data (all rows except the test fold)
+        size_t train_rows = rows - rowsPerFold;
+        double **train_data = malloc(train_rows * sizeof(double*));
+        size_t train_idx = 0;
+        size_t test_start = foldIdx * rowsPerFold;
+        size_t test_end = test_start + rowsPerFold;
+        for (size_t i = 0; i < rows; ++i) {
+            if (i < test_start || i >= test_end) {
+                train_data[train_idx++] = data[i];
+            }
+        }
+        struct dim train_dim = {train_rows, cols};
+        const ModelContext ctx = {
+            testingFoldIdx : foldIdx,
+            rowsPerFold : rowsPerFold
         };
-
-        // Train an instance of the model with every fold of data except of the fold indentified by
-        // 'foldIdx' used for training the the 'foldIdx' fold withheld from training in order to be
-        // used for evaluation.
-        const DecisionTreeNode **random_forest = (const DecisionTreeNode **)train_model(
-            data,
+        // Train on training data only
+        const DecisionTreeNode **random_forest = train_model(
+            train_data,
             params,
-            csv_dim,
+            &train_dim,
             &ctx);
-
-        // Evaluate the model that was just trained. We use the fold identified by 'foldIdx' to evaluate
-        // the model.
+        // Evaluate on the test fold (still using the full data array for eval_model, which uses ctx to select test rows)
         const double accuracy = eval_model(
-            random_forest /* Model to evaluate. */,
+            random_forest,
             data,
             params,
             csv_dim,
             &ctx);
         sumAccuracy += accuracy;
-
-        // Free memory that was used to store the model.
         free_random_forest(&random_forest, params->n_estimators);
+        free(train_data);
     }
-
     return sumAccuracy / k_folds;
 }
