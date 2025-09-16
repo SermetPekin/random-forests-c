@@ -1,8 +1,13 @@
+
+
+
 /*
 @author andrii dobroshynski
 */
 
 #include "utils.h"
+
+int log_level = 1;
 
 int get_log_level()
 {
