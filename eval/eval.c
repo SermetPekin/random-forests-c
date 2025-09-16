@@ -50,10 +50,10 @@ void hyperparameter_search(double **data, struct dim *csv_dim)
             size_t max_depth = max_depths[j];
 
             RandomForestParameters params = {
-                n_estimators : n_estimators,
-                max_depth : max_depth,
-                min_samples_leaf : min_samples_leaf,
-                max_features : max_features
+                .n_estimators = n_estimators,
+                .max_depth = max_depth,
+                .min_samples_leaf = min_samples_leaf,
+                .max_features = max_features
             };
 
             if (log_level > 0)
@@ -145,8 +145,8 @@ double cross_validate(double **data,
         }
         struct dim train_dim = {train_rows, cols};
         const ModelContext ctx = {
-            testingFoldIdx : foldIdx,
-            rowsPerFold : rowsPerFold
+            .testingFoldIdx = foldIdx,
+            .rowsPerFold = rowsPerFold
         };
         // Train on training data only
         const DecisionTreeNode **random_forest = train_model(
