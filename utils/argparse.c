@@ -16,7 +16,11 @@
             arguments->rows = atol(argv[++i]);
         } else if (strcmp(argv[i], ARG_KEY_COLS) == 0 && i + 1 < argc) {
             arguments->cols = atol(argv[++i]);
+        } else if (strncmp(argv[i], ARG_KEY_LOG_LEVEL "=", strlen(ARG_KEY_LOG_LEVEL) + 1) == 0) {
+            // Support --log_level=2 style
+            arguments->log_level = atoi(argv[i] + strlen(ARG_KEY_LOG_LEVEL) + 1);
         } else if (strcmp(argv[i], ARG_KEY_LOG_LEVEL) == 0 && i + 1 < argc) {
+            // Support --log_level 2 style
             arguments->log_level = atoi(argv[++i]);
         } else if (strcmp(argv[i], ARG_KEY_SEED) == 0 && i + 1 < argc) {
             arguments->random_seed = atoi(argv[++i]);
@@ -26,4 +30,3 @@
     }
 }
 
- 
