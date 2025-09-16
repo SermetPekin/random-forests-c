@@ -1,13 +1,29 @@
+
+
 /*
-@author andrii dobroshynski
-*/
+ * Modifications by Sermet Pekin , 19.09.2025 :
+ * - Improved CSV parsing to handle long lines.
+ * - Added debug information for CSV parsing.
+ *
+ * Original code copyright (c) andrii dobroshynski /2023
+ * Licensed under the Apache License, Version 2.0
+ */
 
 #include "data.h"
+
+int DEBUG = 0;
+
+int get_buf_size()
+{
+    return 8192;
+    // return BUFSIZ;
+}
 
 struct dim parse_csv_dims(const char *file_name)
 {
     FILE *csv_file;
     csv_file = fopen(file_name, "r");
+    int buf_size = get_buf_size();
 
     if (csv_file == NULL)
     {
@@ -17,7 +33,7 @@ struct dim parse_csv_dims(const char *file_name)
 
     const char *delimiter = ",";
 
-    char *buffer = malloc(BUFSIZ);
+    char *buffer = malloc(buf_size); // BUFSIZ
     char *token;
 
     // Keeping track of how many rows and columns there are.
@@ -25,7 +41,7 @@ struct dim parse_csv_dims(const char *file_name)
     int cols = 0;
 
     // Reach each line of the file into the buffer.
-    while (fgets(buffer, BUFSIZ, csv_file) != NULL)
+    while (fgets(buffer, buf_size, csv_file) != NULL)
     {
         ++rows;
 
@@ -40,6 +56,9 @@ struct dim parse_csv_dims(const char *file_name)
         while (token != NULL)
         {
             ++curr_cols;
+            if (DEBUG)
+                printf(" R: %d c: %d %s\n", rows, curr_cols, token);
+
             // printf("%s\n", token);
 
             // Get the next token.
@@ -79,8 +98,9 @@ void parse_csv(const char *file_name, double **data_p, const struct dim csv_dim)
     }
 
     const char *delimiter = ",";
+    int buf_size = get_buf_size();
 
-    char *buffer = malloc(BUFSIZ);
+    char *buffer = malloc(buf_size);
     char *token;
 
     // Keeping track which row we are on.
