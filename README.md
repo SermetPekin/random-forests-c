@@ -1,7 +1,19 @@
 [![CMake Build and Test](https://github.com/SermetPekin/random-forests-c/actions/workflows/c-cpp.yml/badge.svg)](https://github.com/SermetPekin/random-forests-c/actions/workflows/c-cpp.yml)
-
 # Random Forests - C
 A proof of concept basic implementation of random forests for classification and accompanying decision trees in C.
+
+---
+
+## 🚀 Notable Contributions by Sermet Pekin (2025)
+
+- Added real-world and synthetic dataset scripts (`data.py`, `data2.py`, `data_binary.py`) for easy experimentation.
+- Fixed a critical data leakage bug in cross-validation logic, ensuring proper model evaluation.
+- Created a cross-platform `Makefile` for simple building and testing without CMake.
+- Added a GitHub Actions workflow for automated build and test on every push/PR.
+
+These improvements enhance reproducibility, reliability, and usability for new users and contributors.
+
+---
 
 ## Running the code
 
@@ -76,5 +88,36 @@ The optional arguments to the program (can be viewed by running with a `--help` 
   -s, --seed=number          Optional random number seed.
 ```
 
-## Reference
-Breiman, Leo. "Random forests." Machine learning 45.1 (2001): 5-32.
+## 🛠️ Installation & Quick Start
+
+### Option 1: Using Makefile (Recommended)
+
+1. Ensure you have `gcc` and `make` installed.
+2. Clone the repository:
+   ```sh
+   git clone https://github.com/SermetPekin/random-forests-c.git
+   cd random-forests-c
+   ```
+3. Build the project:
+   ```sh
+   make
+   ```
+4. (Optional) Run the included tests:
+   ```sh
+   make test
+   ```
+
+### Option 2: One-Line GCC Build
+
+If you have GCC but not Make, you can build the project with a single command:
+
+```sh
+gcc -std=c99 -O1 -o random-forest main.c utils/utils.c utils/data.c utils/argparse.c model/tree.c model/forest.c eval/eval.c
+```
+
+Then run:
+```sh
+./random-forest data.csv
+```
+
+---
