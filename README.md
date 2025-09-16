@@ -20,7 +20,7 @@ These improvements enhance reproducibility, reliability, and usability for new u
 Fastest way to start experimenting is to
 - (1) run the `data.py` script to generate some random CSV data
 - (2) compile as preferred (optionally using the `CMakeLists.txt` provided)
-- (3) run `./random-forests-c <path_to_csv_file>` or `./random-forests-c --help` to see which arguments are available to configure.
+- (3) run `./random-forests data.csv` or `./random-forests --help` to see which arguments are available to configure.
 
 The [`main.c`](./main.c) file contains an example configuration of a random forest and code to run `cross_validate()` which will both train and evaluate a model.
 
