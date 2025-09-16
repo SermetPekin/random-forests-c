@@ -1,3 +1,27 @@
+// Only include utils.h, which includes _2d_calloc and all needed headers
+#include "utils.h"
+// Allocates and fills a 2D array with only the selected columns (excluding target column) and appends the target column as the last column.
+// selected_cols: array of column indices to keep, num_selected: how many, target_col: index of target column
+// Returns a new 2D array of shape [rows][num_features+1] (features + target column as last col)
+double **select_columns(const double **pivoted_data, size_t rows, const int *selected_cols, size_t num_selected, int target_col) {
+    // Count features (exclude target_col if present)
+    int features[64];
+    size_t num_features = 0;
+    for (size_t i = 0; i < num_selected; ++i) {
+        if (selected_cols[i] != target_col) {
+            features[num_features++] = selected_cols[i];
+        }
+    }
+    size_t out_cols = num_features + 1;
+    double **out = _2d_calloc(rows, out_cols);
+    for (size_t i = 0; i < rows; ++i) {
+        for (size_t j = 0; j < num_features; ++j) {
+            out[i][j] = pivoted_data[i][features[j]];
+        }
+        out[i][num_features] = pivoted_data[i][target_col];
+    }
+    return out;
+}
 /*
  * Modifications by Sermet Pekin , 19.09.2025 :
  * - Improved CSV parsing to handle long lines.

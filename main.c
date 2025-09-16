@@ -9,29 +9,31 @@
 #include "utils/argparse.h"
 #include "utils/data.h"
 #include "utils/utils.h"
-
-
-
+#include "utils/options.h"
 
 int main(int argc, char **argv)
 {
+
     struct arguments arguments;
     parse_args(argc, argv, &arguments);
 
-
     set_log_level(arguments.log_level);
 
-    // Optionally set the random seed if a specific random seed was provided via an argument.
+    // Load options from options.txt
+    Options opts;
 
-    if (arguments.random_seed)
-        srand(arguments.random_seed);
-    else
-        srand((unsigned int)time(NULL));
+    if (parse_options_file("options.txt", &opts) != 0)
+    {
+        printf("Failed to read options.txt.\n");
+        return 1;
+    }
+
+
 
     // Read the csv file from args which must be parsed now.
-
     const char *file_name = arguments.args[0];
-    if (!file_name) {
+    if (!file_name)
+    {
         printf("Usage: %s <CSV_FILE> [--num_rows N] [--num_cols N] [--log_level N] [--seed N]\n", argv[0]);
         return 1;
     }
@@ -39,12 +41,23 @@ int main(int argc, char **argv)
     // If the values for rows and cols were provided as arguments, then use them for the
     // 'dim' struct, otherwise call 'parse_csv_dims()' to parse the csv file provided to
     // compute the size of the csv file.
-    struct dim csv_dim;
-
+    dim csv_dim;
     if (arguments.rows && arguments.cols)
-        csv_dim = (struct dim){rows : arguments.rows, cols : arguments.cols};
+        csv_dim = (dim){.rows = arguments.rows, .cols = arguments.cols};
     else
         csv_dim = parse_csv_dims(file_name);
+
+    // Resolve negative indices in options now that we know total columns
+    resolve_column_indices(&opts, csv_dim.cols);
+    print_options(&opts);
+
+    // Optionally set the random seed if a specific random seed was provided via an argument.
+    if (arguments.random_seed)
+        srand(arguments.random_seed);
+    else
+        srand((unsigned int)time(NULL));
+
+
 
     if (log_level > 0)
         printf("using:\n  verbose log level: %d\n  rows: %ld, cols: %ld\nreading from csv file:\n  \"%s\"\n",
@@ -61,20 +74,18 @@ int main(int argc, char **argv)
     if (log_level > 1)
         printf("data checksum = %f\n", _1d_checksum(data, csv_dim.rows * csv_dim.cols));
 
-    const int k_folds = 5 ;
+    const int k_folds = 5;
 
     if (log_level > 0)
         printf("using:\n  k_folds: %d\n", k_folds);
 
-    // Example configuration for a random forest model.
+    // Use options for random forest parameters
     const RandomForestParameters params = {
-        n_estimators : 3 /* Number of trees in the random forest model. */,
-        max_depth : 7 /* Maximum depth of a tree in the model. */,
-        min_samples_leaf : 3,
-        max_features : 3
+        .n_estimators = opts.n_estimators,
+        .max_depth = opts.max_depth,
+        .min_samples_leaf = opts.min_samples_leaf,
+        .max_features = (strcmp(opts.max_features, "auto") == 0) ? opts.num_include_columns : atoi(opts.max_features)
     };
-
-    // Print random forest parameters.
     if (log_level > 0)
         print_params(&params);
 
@@ -87,6 +98,9 @@ int main(int argc, char **argv)
 
     // Start the clock for timing.
     clock_t begin_clock = clock();
+
+    // TODO: Use opts.include_columns and opts.target_column in your data/model pipeline
+    // For now, just print them (already done in print_options)
 
     double cv_accuracy = cross_validate(pivoted_data, &params, &csv_dim, k_folds);
     printf("cross validation accuracy: %f%% (%ld%%)\n",

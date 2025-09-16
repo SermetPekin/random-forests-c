@@ -5,6 +5,7 @@ SRC = main.c \
       utils/utils.c \
       utils/data.c \
       utils/argparse.c \
+      utils/options.c \
       model/tree.c \
       model/forest.c \
       eval/eval.c
@@ -26,4 +27,4 @@ clean:
 
 test: $(TARGET)
 
-	./$(TARGET) data.csv
+	./$(TARGET) iris_binary.csv

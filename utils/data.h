@@ -1,3 +1,9 @@
+#include "options.h"
+
+// Allocates and fills a 2D array with only the selected columns (excluding target column) and appends the target column as the last column.
+// selected_cols: array of column indices to keep, num_selected: how many, target_col: index of target column
+// Returns a new 2D array of shape [rows][num_features+1] (features + target column as last col)
+double **select_columns(const double **pivoted_data, size_t rows, const int *selected_cols, size_t num_selected, int target_col);
 /*
 @author andrii dobroshynski
 */
@@ -16,11 +22,11 @@
 /*
 Struct for parsed data dimensions.
 */
-struct dim
+typedef struct dim
 {
     size_t rows;
     size_t cols;
-};
+} dim;
 
 /*
 Attempts to read a csv file at path given by 'file_name', and if successfull, records the
