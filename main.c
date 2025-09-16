@@ -10,33 +10,31 @@
 #include "utils/data.h"
 #include "utils/utils.h"
 
-/* Our argp parser. */
-static struct argp argp = {options, parse_opt, args_doc, doc};
+
+
 
 int main(int argc, char **argv)
 {
     struct arguments arguments;
+    parse_args(argc, argv, &arguments);
 
-    // Default argument values.
-    arguments.log_level = 1;
-    arguments.rows = 0;
-    arguments.cols = 0;
 
-    /* Parse our arguments; every option seen by parse_opt will
-     be reflected in arguments. */
-    argp_parse(&argp, argc, argv, 0, 0, &arguments);
-
-    // Set the log level to whatever was parsed from the arguments or the default value.
     set_log_level(arguments.log_level);
 
     // Optionally set the random seed if a specific random seed was provided via an argument.
+
     if (arguments.random_seed)
         srand(arguments.random_seed);
     else
-        srand(time(NULL));
+        srand((unsigned int)time(NULL));
 
     // Read the csv file from args which must be parsed now.
+
     const char *file_name = arguments.args[0];
+    if (!file_name) {
+        printf("Usage: %s <CSV_FILE> [--num_rows N] [--num_cols N] [--log_level N] [--seed N]\n", argv[0]);
+        return 1;
+    }
 
     // If the values for rows and cols were provided as arguments, then use them for the
     // 'dim' struct, otherwise call 'parse_csv_dims()' to parse the csv file provided to
@@ -63,7 +61,7 @@ int main(int argc, char **argv)
     if (log_level > 1)
         printf("data checksum = %f\n", _1d_checksum(data, csv_dim.rows * csv_dim.cols));
 
-    const int k_folds = 1;
+    const int k_folds = 5 ;
 
     if (log_level > 0)
         printf("using:\n  k_folds: %d\n", k_folds);
