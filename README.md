@@ -10,7 +10,49 @@ A proof of concept basic implementation of random forests for classification and
 - Fixed a critical data leakage bug in cross-validation logic, ensuring proper model evaluation.
 - Created a cross-platform `Makefile` for simple building and testing without CMake.
 - Added a GitHub Actions workflow for automated build and test on every push/PR.
+- Added a Mermaid class diagram to visually explain the DecisionTreeNode and related data structures, making the library's architecture easier to understand.
 
+```mermaid
+
+classDiagram
+    class DecisionTreeNode {
+        long id
+        DecisionTreeNode* leftChild
+        DecisionTreeNode* rightChild
+        double** half1
+        double** half2
+        int size_half1
+        int size_half2
+        int split_index
+        double split_value
+        DecisionTreeData* split_data_halves
+        int left_leaf
+        int right_leaf
+    }
+
+    class DecisionTreeData {
+        size_t length
+        double** data
+    }
+
+    class DecisionTreeDataSplit {
+        int index
+        double value
+        double gini
+        DecisionTreeData* data
+    }
+
+    class DecisionTreeTargetClasses {
+        size_t count
+        int* labels
+    }
+
+    DecisionTreeNode --> DecisionTreeNode : leftChild
+    DecisionTreeNode --> DecisionTreeNode : rightChild
+    DecisionTreeNode --> DecisionTreeData : split_data_halves
+    DecisionTreeDataSplit --> DecisionTreeData : data
+    DecisionTreeTargetClasses --> int : labels
+```
 These improvements enhance reproducibility, reliability, and usability for new users and contributors.
 
 ---
