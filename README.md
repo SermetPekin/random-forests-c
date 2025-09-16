@@ -4,7 +4,7 @@ A proof of concept basic implementation of random forests for classification and
 
 ---
 
-## 🚀 Notable Contributions by Sermet Pekin (2025)
+## Improvements by Sermet Pekin (2025)
 
 - Added real-world and synthetic dataset scripts (`data.py`, `data2.py`, `data_binary.py`) for easy experimentation.
 - Fixed a critical data leakage bug in cross-validation logic, ensuring proper model evaluation.
