@@ -72,7 +72,8 @@ struct dim parse_csv_dims(const char *file_name)
         while (token != NULL)
         {
             ++curr_cols;
-            DEBUG_PRINT(" R: %d c: %d %s\n", rows, curr_cols, token);
+            DEBUG_PRINT( " R: %d Col: %zu %s\n", rows, curr_cols, token );
+
             token = strtok(NULL, delimiter);
         }
         if (cols == 0)
