@@ -1,11 +1,10 @@
-
-
 CC = gcc
 CFLAGS = -std=c99 -O1
 
 SRC = main.c \
       utils/utils.c \
       utils/data.c \
+      utils/argparse.c \
       model/tree.c \
       model/forest.c \
       eval/eval.c
