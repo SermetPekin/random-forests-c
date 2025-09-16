@@ -1,3 +1,5 @@
+[![CMake Build and Test](https://github.com/SermetPekin/random-forests-c/actions/workflows/c-cpp.yml/badge.svg)](https://github.com/SermetPekin/random-forests-c/actions/workflows/c-cpp.yml)
+
 # Random Forests - C
 A proof of concept basic implementation of random forests for classification and accompanying decision trees in C.
 
