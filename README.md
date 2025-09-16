@@ -114,10 +114,74 @@ If you have GCC but not Make, you can build the project with a single command:
 ```sh
 gcc -std=c99 -O1 -o random-forest main.c utils/utils.c utils/data.c utils/argparse.c model/tree.c model/forest.c eval/eval.c
 ```
-
+# with random data 
 Then run:
 ```sh
 ./random-forest data.csv
 ```
+```
+using:
+  verbose log level: 1
+  rows: 100, cols: 100
+reading from csv file:
+  "data.csv"
+using:
+  k_folds: 5
+using RandomForestParameters:
+  n_estimators: 3
+  max_depth: 7
+  min_samples_leaf: 3
+  max_features: 3
+cross validation accuracy: 54.000000% (54%)
+(time taken: 0.178000s)
+```
 
 ---
+
+# with scikit-learn iris data (Real data example)
+
+```sh
+./random-forest iris_binary.csv
+```
+
+```plaintext
+using:
+  verbose log level: 1
+  rows: 100, cols: 5
+reading from csv file:
+  "iris_binary.csv"
+using:
+  k_folds: 5
+using RandomForestParameters:
+  n_estimators: 3
+  max_depth: 7
+  min_samples_leaf: 3
+  max_features: 3
+cross validation accuracy: 94.000000% (94%)
+(time taken: 0.082000s)
+
+```
+
+# with scikit-learn make_classification (structured data) 
+```sh
+./random-forest data_binary.csv
+```
+
+
+```plaintext
+using:
+  verbose log level: 1
+  rows: 150, cols: 5
+reading from csv file:
+  "data_binary.csv"
+using:
+  k_folds: 5
+using RandomForestParameters:
+  n_estimators: 3
+  max_depth: 7
+  min_samples_leaf: 3
+  max_features: 3
+cross validation accuracy: 90.666667% (90%)
+(time taken: 0.299000s)
+
+```
