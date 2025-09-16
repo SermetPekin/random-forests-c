@@ -1,3 +1,8 @@
+
+/*
+ * Contribution: Fixed global variable log_level definition to avoid multiple definition errors.
+ * By Sermet Pekin, 16.09.2025
+ */
 /*
 @author andrii dobroshynski
 */
@@ -22,7 +27,7 @@ typedef struct ModelContext ModelContext;
 /*
 The debug log level that can be adjusted via an argument.
 */
-int log_level;
+extern int log_level;
 
 /*
 Given a pointer to a buffer array of integers returns whether or not a given integer 'n'
