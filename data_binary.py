@@ -15,9 +15,9 @@ X, y = make_classification(
 header = [f'feature_{i+1}' for i in range(X.shape[1])] + ['label']
 rows = np.column_stack((X, y))
 
-with open('data.csv', 'w', newline='') as f:
+with open('data_binary.csv', 'w', newline='') as f:
     writer = csv.writer(f)
     writer.writerow(header)
     writer.writerows(rows)
 
-print("CSV file 'data.csv' created for binary classification.")
+print("CSV file 'data_binary.csv' created for binary classification.")
