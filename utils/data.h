@@ -35,16 +35,16 @@ struct dim parse_csv_dims(const char *file_name);
 
 /*
 Attempts to read a csv file at path given by 'file_name' and write the values one-by-one into 'data'.
-If an argument for '--num_rows' was provided to the program and is less than the actual number of 
+If an argument for '--num_rows' was provided to the program and is less than the actual number of
 rows in the csv file, the function will stop reading at that row. This allows to read only the top
 'num_rows' in the input data file if needed.
 */
 void parse_csv(const char *file_name, double **data_p, const struct dim csv_dim);
 
 /*
-Pivots and transforms the data in 'data' array into a two-dimensional array of size 
+Pivots and transforms the data in 'data' array into a two-dimensional array of size
 'csv_dim.rows' * 'csv_dim.cols' pointed to by 'pivoted_data_p'.
 */
-void pivot_data(double *data, const struct dim csv_dim, double ***pivoted_data_p);
+void pivot_data(const double *data, const struct dim csv_dim, double ***pivoted_data_p);
 
 #endif // data_h
