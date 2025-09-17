@@ -1,3 +1,8 @@
+/*
+ * Modifications by Sermet Pekin , 19.09.2025 :
+    * - Added log_if_level function for conditional logging based on log_level.
+ */
+
 #ifndef log_h
 #define log_h
 
