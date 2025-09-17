@@ -9,6 +9,7 @@
 #include "utils/argparse.h"
 #include "utils/data.h"
 #include "utils/utils.h"
+#include "utils/log.h"
 
 
 
@@ -46,25 +47,25 @@ int main(int argc, char **argv)
     else
         csv_dim = parse_csv_dims(file_name);
 
-    if (log_level > 0)
-        printf("using:\n  verbose log level: %d\n  rows: %ld, cols: %ld\nreading from csv file:\n  \"%s\"\n",
-               log_level,
+
+        log_if_level(0, "using:\n  verbose log level: %d\n  rows: %ld, cols: %ld\nreading from csv file:\n  \"%s\"\n",
+               arguments.log_level,
                csv_dim.rows,
                csv_dim.cols,
                file_name);
+
 
     // Allocate memory for the data coming from the .csv and read in the data.
     double *data = malloc(sizeof(double) * csv_dim.rows * csv_dim.cols);
     parse_csv(file_name, &data, csv_dim);
 
     // Compute a checksum of the data to verify that loaded correctly.
-    if (log_level > 1)
-        printf("data checksum = %f\n", _1d_checksum(data, csv_dim.rows * csv_dim.cols));
+    log_if_level(1, "data checksum = %f\n", _1d_checksum(data, csv_dim.rows * csv_dim.cols));
+
 
     const int k_folds = 5 ;
 
-    if (log_level > 0)
-        printf("using:\n  k_folds: %d\n", k_folds);
+    log_if_level(0, "using:\n  k_folds: %d\n", k_folds);
 
     // Example configuration for a random forest model.
     const RandomForestParameters params = {
@@ -75,6 +76,8 @@ int main(int argc, char **argv)
     };
 
     // Print random forest parameters.
+
+
     if (log_level > 0)
         print_params(&params);
 
@@ -82,9 +85,8 @@ int main(int argc, char **argv)
     double **pivoted_data;
     pivot_data(data, csv_dim, &pivoted_data);
 
-    if (log_level > 1)
-        printf("checksum of pivoted 2d array: %f\n", _2d_checksum(pivoted_data, csv_dim.rows, csv_dim.cols));
-
+    log_if_level(1, "checksum of pivoted 2d array: %f\n", _2d_checksum(pivoted_data, csv_dim.rows, csv_dim.cols));
+    
     // Start the clock for timing.
     clock_t begin_clock = clock();
 

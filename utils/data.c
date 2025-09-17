@@ -9,6 +9,7 @@
 
 
 #include "data.h"
+#include "log.h"
 
 // Set to 1 if your CSV has a header row, 0 otherwise
 #define CSV_HAS_HEADER 1
@@ -146,8 +147,7 @@ void parse_csv(const char *file_name, double **data_p, const struct dim csv_dim)
         }
     }
 
-    if (log_level > 1)
-        printf("read %d rows from file %s\n", row - (CSV_HAS_HEADER ? 1 : 0), file_name);
+    log_if_level(1, "read %d rows from file %s\n", row - (CSV_HAS_HEADER ? 1 : 0), file_name);
 
     if (fclose(csv_file) != 0) {
         printf("Warning: error closing file %s\n", file_name);

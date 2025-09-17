@@ -7,7 +7,8 @@ SRC = main.c \
       utils/argparse.c \
       model/tree.c \
       model/forest.c \
-      eval/eval.c
+      eval/eval.c \
+      utils/log.c
 
 OBJ = $(SRC:.c=.o)
 
