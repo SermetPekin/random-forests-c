@@ -27,4 +27,4 @@ clean:
 
 test: $(TARGET)
 
-	./$(TARGET) data.csv
+	./$(TARGET) iris_binary.csv

@@ -113,8 +113,11 @@ double eval_model(const DecisionTreeNode **random_forest,
                                        data[row_id]);
         int ground_truth = (int)data[row_id][csv_dim->cols - 1];
 
-        if (log_level > 1)
-            printf("majority vote: %d | %d ground truth\n", prediction, ground_truth);
+        log_if_level(1, "majority vote:  %ld |  ground truth: %d\n",
+                prediction, ground_truth);
+
+        // if (log_level > 1)
+        //     printf("majority vote: %d | %d ground truth\n", prediction, ground_truth);
 
         if (prediction == ground_truth)
             ++num_correct;
