@@ -72,7 +72,7 @@ struct dim parse_csv_dims(const char *file_name)
         while (token != NULL)
         {
             ++curr_cols;
-            DEBUG_PRINT( " R: %d Col: %zu %s\n", rows, curr_cols, token );
+            DEBUG_PRINT( " R: %d Col: %d %s\n", rows, curr_cols, token );
 
             token = strtok(NULL, delimiter);
         }
@@ -103,7 +103,7 @@ struct dim parse_csv_dims(const char *file_name)
     assert(cols > 0 && "# of cols in csv must be > 0");
 
 
-    return (struct dim){rows : rows, cols : cols};
+    return (struct dim){.rows = rows, .cols = cols};
 }
 
 // Parses the CSV file and fills the data array
@@ -139,7 +139,7 @@ void parse_csv(const char *file_name, double **data_p, const struct dim csv_dim)
 
         token = strtok(buffer, delimiter);
         while (token != NULL) {
-            DEBUG_PRINT("Parsing row %d col %d: %s\n", row, (idx % csv_dim.cols) + 1, token);
+            DEBUG_PRINT("Parsing row %d col %zu: %s\n", row, (idx % csv_dim.cols) + 1, token);
             (*data_p)[idx] = atof(token);
             ++idx;
             token = strtok(NULL, delimiter);

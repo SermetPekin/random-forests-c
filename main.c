@@ -42,7 +42,7 @@ int main(int argc, char **argv)
     struct dim csv_dim;
 
     if (arguments.rows && arguments.cols)
-        csv_dim = (struct dim){rows : arguments.rows, cols : arguments.cols};
+        csv_dim = (struct dim){.rows = arguments.rows, .cols = arguments.cols};
     else
         csv_dim = parse_csv_dims(file_name);
 
@@ -68,10 +68,10 @@ int main(int argc, char **argv)
 
     // Example configuration for a random forest model.
     const RandomForestParameters params = {
-        n_estimators : 3 /* Number of trees in the random forest model. */,
-        max_depth : 7 /* Maximum depth of a tree in the model. */,
-        min_samples_leaf : 3,
-        max_features : 3
+        .n_estimators = 3 /* Number of trees in the random forest model. */,
+        .max_depth = 7 /* Maximum depth of a tree in the model. */,
+        .min_samples_leaf = 3,
+        .max_features = 3
     };
 
     // Print random forest parameters.
