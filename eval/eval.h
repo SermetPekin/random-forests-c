@@ -1,4 +1,10 @@
 /*
+ * Note: Data leakage in cross-validation was fixed in this file.
+ * The training set for each fold now properly excludes the test fold rows.
+ * Fix by Sermet Pekin, 16.09.2025
+ */
+
+/*
 @author andrii dobroshynski
 */
 

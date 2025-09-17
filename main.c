@@ -1,4 +1,13 @@
 /*
+ * Modifications by Sermet Pekin , 19.09.2025 :
+ * - Improved CSV parsing to handle long lines.
+ * - Added debug information for CSV parsing.
+ * - Added log_if_level function for conditional logging based on log_level.
+ * - The training set for each fold now properly excludes the test fold rows.
+ * Fix by Sermet Pekin, 16.09.2025
+ */
+
+/*
 @author andrii dobroshynski
 */
 
