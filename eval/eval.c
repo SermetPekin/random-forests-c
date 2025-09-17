@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "eval.h"
+#include "../utils/log.h"
 
 void hyperparameter_search(double **data, struct dim *csv_dim)
 {
@@ -56,20 +57,21 @@ void hyperparameter_search(double **data, struct dim *csv_dim)
                 .max_features = max_features
             };
 
-            if (log_level > 0)
-            {
-                printf("[hyperparameter search] running cross_validate\n");
-                printf("[hyperparameter search] ");
-                print_params(&params);
-            }
+            log_if_level(0, "[hyperparameter search] testing params:\n  n_estimators: %ld\n  max_depth: %ld\n  min_samples_leaf: %ld\n  max_features: %ld\n",
+                   params.n_estimators,
+                   params.max_depth,
+                   params.min_samples_leaf,
+                   params.max_features);
+
+
+
 
             double cv_accuracy = cross_validate(data,
                                                 &params,
                                                 csv_dim,
                                                 k_folds);
 
-            if (log_level > 0)
-                printf("[hyperparameter search] cross validation accuracy: %f%% (%ld%%)\n",
+            log_if_level(0, "[hyperparameter search] cross validation accuracy: %f%% (%ld%%)\n",
                        (cv_accuracy * 100),
                        (long)(cv_accuracy * 100));
 
