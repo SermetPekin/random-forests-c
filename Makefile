@@ -1,5 +1,6 @@
 CC = gcc
-CFLAGS = -std=c99 -O1
+CFLAGS = -std=c99 -O1 -fsanitize=address -g -Wall -Wextra -Wpedantic
+
 
 SRC = main.c \
       utils/utils.c \
