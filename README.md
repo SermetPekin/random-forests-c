@@ -4,10 +4,10 @@ A proof of concept basic implementation of random forests for classification and
 
 ---
 
-## Improvements by Sermet Pekin (2025)
+## Key Improvements over  [https://github.com/ad8cf8/random-forests-c](https://github.com/ad8cf8/random-forests-c)
 
 - Added real-world and synthetic dataset scripts (`data.py`, `data2.py`, `data_binary.py`) for easy experimentation.
-- Fixed a critical data leakage bug in cross-validation logic, ensuring proper model evaluation.
+- Fixed a data leakage bug in cross-validation logic, ensuring proper model evaluation.
 - Created a cross-platform `Makefile` for simple building and testing without CMake.
 - Added a GitHub Actions workflow for automated build and test on every push/PR.
 - Added a Mermaid class diagram to visually explain the DecisionTreeNode and related data structures, making the library's architecture easier to understand.
